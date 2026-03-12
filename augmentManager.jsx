@@ -37,6 +37,7 @@ export async function main(ns) {
         return (
             <div>
                 <AugmentOptions options={options} setOptions={setOptions} />
+                <AugmentSpacer />
                 <table border="1" style={{ width: "100%" }}>
                     <AugmentHeader columns={columns} />
                     <AugmentBody augments={augments} player={player} options={options} />
@@ -66,6 +67,12 @@ export async function main(ns) {
                 </label>
             </div>
         );
+    }
+
+    function AugmentSpacer() {
+        return (
+            <div style={{ width: "100%", height: "25px" }} />
+        )
     }
 
     function AugmentHeader({ columns }) {
