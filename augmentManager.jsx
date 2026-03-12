@@ -54,7 +54,7 @@ export async function main(ns) {
         }
 
         return (
-            <div style={{ position: "sticky", top: "-2px", left: "2px", width: (String(ns.ui.windowSize()[0] - 2) + "px"), backgroundColor: theme.backgroundprimary }}>
+            <div style={{ position: "sticky", top: "-2px", left: "1px", width: "calc(100% - 2px)", backgroundColor: theme.backgroundsecondary }}>
                 <label>Limit to:</label>
                 <label>
                     <input type={`checkbox`} name={`purchaseable`} checked={options.purchaseable} onChange={handleChange} />
@@ -125,7 +125,8 @@ export async function main(ns) {
         function handleClick() {
             for (const faction of player.factions) {
                 while (player.money >= augment.price && ns.singularity.getFactionRep(faction) >= augment.rep) {
-                    ns.singularity.purchaseAugmentation(faction, NFG);
+                    if (!ns.singularity.purchaseAugmentation(faction, NFG))
+                        break;
                 }
             }
         }
