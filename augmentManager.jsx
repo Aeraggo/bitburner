@@ -37,7 +37,6 @@ export async function main(ns) {
         return (
             <div>
                 <AugmentOptions options={options} setOptions={setOptions} />
-                <AugmentSpacer />
                 <table border="1" style={{ width: "100%" }}>
                     <AugmentHeader columns={columns} />
                     <AugmentBody augments={augments} player={player} options={options} />
@@ -55,7 +54,7 @@ export async function main(ns) {
         }
 
         return (
-            <div style={{ position: "fixed", top: "35px", width: "100%", backgroundColor: theme.backgroundprimary }}>
+            <div style={{ position: "sticky", top: "-2px", left: "2px", width: (String(ns.ui.windowSize()[0] - 2) + "px"), backgroundColor: theme.backgroundprimary }}>
                 <label>Limit to:</label>
                 <label>
                     <input type={`checkbox`} name={`purchaseable`} checked={options.purchaseable} onChange={handleChange} />
@@ -67,12 +66,6 @@ export async function main(ns) {
                 </label>
             </div>
         );
-    }
-
-    function AugmentSpacer() {
-        return (
-            <div style={{ width: "100%", height: "25px" }} />
-        )
     }
 
     function AugmentHeader({ columns }) {
