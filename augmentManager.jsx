@@ -95,8 +95,12 @@ export async function main(ns) {
                             {(augment.name == NFG ? <AugmentBuyAllNFG augment={augment} player={player} /> : ``)}
                         </td>
                         <AugmentName augment={augment} />
-                        <td style={{ color: augmentMoneyColor(augment, player) }}>{ns.format.number(augment.price, 2)}</td>
-                        <td style={{ color: augmentRepColor(augment, player) }}>{ns.format.number(augment.rep, 2)}</td>
+                        <td style={{ color: augmentMoneyColor(augment, player) }}>
+                            {ns.ui.getGameInfo().versionNumber >= 44 ? ns.format.number(augment.price, 2) : ns.formatNumber(augment.price, 2)}
+                        </td>
+                        <td style={{ color: augmentRepColor(augment, player) }}>
+                            {ns.ui.getGameInfo().versionNumber >= 44 ? ns.format.number(augment.rep, 2) : ns.formatNumber(augment.rep, 2)}
+                        </td>
                         <AugmentFactions augment={augment} player={player} showAll={!options.joinedFactions} />
                     </tr>
                 ))}
