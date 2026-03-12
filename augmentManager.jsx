@@ -181,11 +181,12 @@ export async function main(ns) {
 
     function augmentList() {
         let list = [NFG];
+        let ownedAugs = ns.singularity.getOwnedAugmentations(true);
 
         for (const faction of Object.values(ns.enums.FactionName)) {
             const factionAugs = ns.singularity.getAugmentationsFromFaction(faction);
             for (const aug of factionAugs) {
-                if (!list.includes(aug))
+                if (!list.includes(aug) && !ownedAugs.includes(aug))
                     list.push(aug);
             }
         }
