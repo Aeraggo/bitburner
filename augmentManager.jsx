@@ -37,7 +37,7 @@ export async function main(ns) {
         return (
             <div>
                 <AugmentOptions options={options} setOptions={setOptions} />
-                <table width="100%" border="1">
+                <table border="1" style={{ width: "100%" }}>
                     <AugmentHeader columns={columns} />
                     <AugmentBody augments={augments} player={player} options={options} />
                 </table>
@@ -54,7 +54,7 @@ export async function main(ns) {
         }
 
         return (
-            <div>
+            <div style={{ position: "fixed", top: "35px", width: "100%", backgroundColor: theme.backgroundprimary }}>
                 <label>Limit to:</label>
                 <label>
                     <input type={`checkbox`} name={`purchaseable`} checked={options.purchaseable} onChange={handleChange} />
