@@ -123,12 +123,18 @@ export async function main(ns) {
 
     function AugmentBuyAllNFG({ augment, player }) {
         function handleClick() {
+            let buyCount = 0;
             for (const faction of player.factions) {
                 while (player.money >= augment.price && ns.singularity.getFactionRep(faction) >= augment.rep) {
-                    if (!ns.singularity.purchaseAugmentation(faction, NFG))
+                    if (!ns.singularity.purchaseAugmentation(faction, NFG)) {
                         break;
+                    } else {
+                        buyCount++;
+                    }
                 }
             }
+            if (buyCount > 0)
+                ns.toast(`Bought ${buyCount} ${NFG}.`)
         }
 
         return (
