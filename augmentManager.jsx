@@ -9,6 +9,14 @@ export async function main(ns) {
     const NFG = "NeuroFlux Governor";
     const theme = ns.ui.getTheme();
 
+    let timer = null;
+
+    ns.atExit(() => {
+        if (timer) {
+            clearInterval(timer);
+        }
+    })
+
     ns.printRaw(<AugmentTable />);
 
     function AugmentTable() {
@@ -19,7 +27,7 @@ export async function main(ns) {
         })
 
         React.useEffect(() => {
-            let timer = setInterval(() => {
+            timer = setInterval(() => {
                 setPlayer(ns.getPlayer());
             }, 100);
             return () => clearInterval(timer);
