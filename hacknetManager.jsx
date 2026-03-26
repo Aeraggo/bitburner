@@ -10,7 +10,7 @@ export async function main(ns) {
     const upgrades = {
         level: "level",
         ram: "ram",
-        cores: "cores"
+        core: "core"
     }
 
     let timer = null;
@@ -48,7 +48,7 @@ export async function main(ns) {
                     ns.hacknet.upgradeLevel(i);
                 } else if (best == upgrades.ram) {
                     ns.hacknet.upgradeRam(i);
-                } else if (best == upgrades.cores) {
+                } else if (best == upgrades.core) {
                     ns.hacknet.upgradeCore(i);
                 }
             }
@@ -66,15 +66,15 @@ export async function main(ns) {
 
         if (costLevel > 0 && costLevel < Number.POSITIVE_INFINITY) {
             let checkLevel = ns.formulas.hacknetServers.hashGainRate(current.level + 1, current.ramUsed, current.ram, current.cores);
-            resultLevel = (checkLevel - current.production) / costLevel;
+            resultLevel = checkLevel / costLevel;
         }
         if (costRam > 0 && costRam < Number.POSITIVE_INFINITY) {
             let checkRam = ns.formulas.hacknetServers.hashGainRate(current.level, current.ramUsed, current.ram * 2, current.cores);
-            resultRam = (checkRam - current.production) / costRam;
+            resultRam = checkRam / costRam;
         }
         if (costCore > 0 && costCore < Number.POSITIVE_INFINITY) {
             let checkCore = ns.formulas.hacknetServers.hashGainRate(current.level, current.ramUsed, current.ram, current.cores + 1);
-            resultCore = (checkCore - current.production) / costCore;
+            resultCore = checkCore / costCore;
         }
 
         if (resultLevel >= resultRam && resultLevel >= resultCore) {
@@ -84,7 +84,7 @@ export async function main(ns) {
             return upgrades.ram;
         }
         if (resultCore >= resultLevel && resultCore >= resultRam) {
-            return upgrades.cores;
+            return upgrades.core;
         }
 
         return undefined;
