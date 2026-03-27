@@ -17,6 +17,7 @@ export async function main(ns) {
 
     let options = {
         autoSell: false,
+        autoBuy: false,
         autoUpgrade: false
     }
 
@@ -39,6 +40,10 @@ export async function main(ns) {
     function processHacknet() {
         if (options.autoSell) {
             sellAll();
+        }
+
+        if (options.autoBuy) {
+            ns.hacknet.purchaseNode();
         }
 
         if (options.autoUpgrade) {
@@ -128,9 +133,16 @@ export async function main(ns) {
 
         return (
             <div style={{ position: "sticky", top: "-2px", left: "1px", width: "calc(100% - 2px)", backgroundColor: theme.backgroundsecondary }}>
+                <label>Spend:</label>
                 <label>
                     <input type={`checkbox`} name={`autoSell`} checked={options.autoSell} onChange={handleChange} />
                     Sell
+                </label>
+                <br />
+                <label>Auto:</label>
+                <label>
+                    <input type={`checkbox`} name={`autoBuy`} checked={options.autoBuy} onChange={handleChange} />
+                    Buy
                 </label>
                 <label>
                     <input type={`checkbox`} name={`autoUpgrade`} checked={options.autoUpgrade} onChange={handleChange} />
