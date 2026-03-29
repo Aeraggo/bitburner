@@ -12,8 +12,9 @@ export async function main(ns) {
     let timer = null;
 
     let options = {
-        purchaseable: true,
-        joinedFactions: true
+        filterPrice: true,
+        filterRep: true,
+        filterJoined: true
     }
 
     ns.atExit(() => {
@@ -66,11 +67,15 @@ export async function main(ns) {
             <div style={{ position: "sticky", top: "-2px", left: "1px", width: "calc(100% - 2px)", backgroundColor: theme.backgroundsecondary }}>
                 <label>Limit to:</label>
                 <label>
-                    <input type={`checkbox`} name={`purchaseable`} checked={options.purchaseable} onChange={handleChange} />
-                    Purchasable
+                    <input type={`checkbox`} name={`filterPrice`} checked={options.filterPrice} onChange={handleChange} />
+                    Price
                 </label>
                 <label>
-                    <input type={`checkbox`} name={`joinedFactions`} checked={options.joinedFactions} onChange={handleChange} />
+                    <input type={`checkbox`} name={`filterRep`} checked={options.filterRep} onChange={handleChange} />
+                    Rep
+                </label>
+                <label>
+                    <input type={`checkbox`} name={`filterJoined`} checked={options.filterJoined} onChange={handleChange} />
                     Joined Factions
                 </label>
             </div>
@@ -92,8 +97,9 @@ export async function main(ns) {
 
     function AugmentBody({ augments, player }) {
         let filtered = augments.filter(val => (
-            (augmentPurchasable(val, player) || !options.purchaseable) &&
-            (inFactionWithAugment(val, player) || !options.joinedFactions)
+            (checkAugmentPrice(val, player) || !options.filterPrice) &&
+            (checkAugmentRep(val, player) || !options.filterRep) &&
+            (inFactionWithAugment(val, player) || !options.filterJoined)
         ))
         return (
             <tbody>
@@ -110,7 +116,7 @@ export async function main(ns) {
                         <td style={{ color: augmentRepColor(augment, player) }}>
                             {ns.ui.getGameInfo().versionNumber >= 44 ? ns.format.number(augment.rep, 2) : ns.formatNumber(augment.rep, 2)}
                         </td>
-                        <AugmentFactions augment={augment} player={player} showAll={!options.joinedFactions} />
+                        <AugmentFactions augment={augment} player={player} showAll={!options.filterJoined} />
                     </tr>
                 ))}
             </tbody>
@@ -222,6 +228,25 @@ export async function main(ns) {
         for (const faction of player.factions) {
             if (player.money >= augment.price &&
                 ns.singularity.getFactionRep(faction) >= augment.rep &&
+                augment.factions.includes(faction)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    function checkAugmentPrice(augment, player) {
+        if (player.money >= augment.price) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function checkAugmentRep(augment, player) {
+        for (const faction of player.factions) {
+            if (ns.singularity.getFactionRep(faction) >= augment.rep &&
                 augment.factions.includes(faction)) {
                 return true;
             }
