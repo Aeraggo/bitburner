@@ -11,6 +11,11 @@ export async function main(ns) {
 
     let timer = null;
 
+    let options = {
+        purchaseable: true,
+        joinedFactions: true
+    }
+
     ns.atExit(() => {
         if (timer) {
             clearInterval(timer);
@@ -21,10 +26,6 @@ export async function main(ns) {
 
     function AugmentTable() {
         const [player, setPlayer] = React.useState(ns.getPlayer());
-        const [options, setOptions] = React.useState({
-            purchaseable: true,
-            joinedFactions: true
-        })
 
         React.useEffect(() => {
             timer = setInterval(() => {
@@ -33,7 +34,7 @@ export async function main(ns) {
             return () => clearInterval(timer);
         }, []);
 
-        const columns = ["name", "price", "rep", "factions"];
+        const columns = ["Name", "Price", "Rep", "Factions"];
         let list = augmentList();
         list.sort(augmentSort);
         let augments = [];
@@ -44,21 +45,21 @@ export async function main(ns) {
 
         return (
             <div>
-                <AugmentOptions options={options} setOptions={setOptions} />
+                <AugmentOptions />
                 <table border="1" style={{ width: "100%" }}>
                     <AugmentHeader columns={columns} />
-                    <AugmentBody augments={augments} player={player} options={options} />
+                    <AugmentBody augments={augments} player={player} />
                 </table>
             </div>
         );
     }
 
-    function AugmentOptions({ options, setOptions }) {
+    function AugmentOptions() {
         function handleChange(e) {
             const target = e.target
             const value = target.checked;
             const name = target.name;
-            setOptions(values => ({ ...values, [name]: value }))
+            options[name] = value;
         }
 
         return (
@@ -89,7 +90,7 @@ export async function main(ns) {
         );
     }
 
-    function AugmentBody({ augments, player, options }) {
+    function AugmentBody({ augments, player }) {
         let filtered = augments.filter(val => (
             (augmentPurchasable(val, player) || !options.purchaseable) &&
             (inFactionWithAugment(val, player) || !options.joinedFactions)
